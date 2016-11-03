@@ -21,37 +21,54 @@ public class DoomSceneScript : MonoBehaviour {
 	/// The m target dummy.
 	/// </summary>
 	[SerializeField] GameObject m_target_dummy;
-	public float moveSpeed  = 10.0f;
 
-	float yOffset;
+	/// <summary>
+	/// The move speed.
+	/// </summary>
+	public float move_speed  = 15.0f;
+
+	/// <summary>
+	/// The y offset.
+	/// </summary>
+	private float y_offset;
+
+	/// <summary>
+	/// The degree.
+	/// </summary>
+	const float degree = 30.0f;
+
+	/// <summary>
+	/// The full degree.
+	/// </summary>
+	const float full_degree = 360.0f;
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
 	void Start () {
-		yOffset = m_camera.transform.position.y;
-
-
+		y_offset = m_camera.transform.position.y;
 	}
 
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
 	void Update () {
-		// 1.カメラの傾きを取得
+		// 現在の角度を取得する
 		float x = m_camera.transform.eulerAngles.x;
-		Debug.Log (x);
 
-		// 2.ある角度以内であれば前進させる
-		//-20
-		if ((0.0f <= x && x <= 30.0f) || (330.0f <= x && x <= 360.0f)) {
+		// 角度以内なら前進する
+		if ((0.0f <= x && x <= degree) || (full_degree - degree <= x && x <= full_degree)) {
 			moveFoward ();
 		}
 	}
+
+	/// <summary>
+	/// Moves the foward.
+	/// </summary>
 	private void moveFoward() {
-		Vector3 direction = new Vector3 (m_camera.transform.forward.x, 0, m_camera.transform.forward.z).normalized * moveSpeed * Time.deltaTime;
+		Vector3 direction = new Vector3 (m_camera.transform.forward.x, 0, m_camera.transform.forward.z).normalized * move_speed * Time.deltaTime;
 		Quaternion rotation = Quaternion.Euler (new Vector3 (0, -m_camera.transform.rotation.eulerAngles.y, 0));
 		m_camera.transform.Translate (rotation * direction);
-		m_camera.transform.position = new Vector3 (m_camera.transform.position.x, yOffset, m_camera.transform.position.z);
+		m_camera.transform.position = new Vector3 (m_camera.transform.position.x, y_offset, m_camera.transform.position.z);
 	}
 }
