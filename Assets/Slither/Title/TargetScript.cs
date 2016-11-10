@@ -22,7 +22,7 @@ public class TargetScript : MonoBehaviour {
 	/// </summary>
 	/// <param name="collider">Collider.</param>
 	void OnTriggerStay(Collider collider) {
-		if (collider.gameObject.tag == "Start") {
+		if (collider.gameObject.tag == "SinglePlay") {
 			TextMesh start = collider.gameObject.GetComponent<TextMesh>();
 			//だいたい1秒ごとに処理を行う
 			timeleft -= Time.deltaTime;
