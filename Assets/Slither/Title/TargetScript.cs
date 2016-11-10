@@ -31,7 +31,7 @@ public class TargetScript : MonoBehaviour {
 				time -= 1;
 				start.text = time.ToString();
 				if (time == 0) {
-					SceneManager.LoadScene("Slither/Doom/DoomScene");
+					SceneManager.LoadScene("Slither/SingleDoom/SingleDoomScene");
 				}
 			}
 		}
@@ -42,9 +42,9 @@ public class TargetScript : MonoBehaviour {
 	/// </summary>
 	/// <param name="collider">Collider.</param>
 	void OnTriggerExit(Collider collider){
-		if (collider.gameObject.tag == "Start") {
+		if (collider.gameObject.tag == "SinglePlay") {
 			TextMesh start = collider.gameObject.GetComponent<TextMesh>();
-			start.text = "Start";
+			start.text = "SinglePlay";
 			time = 6;
 		}
 	}

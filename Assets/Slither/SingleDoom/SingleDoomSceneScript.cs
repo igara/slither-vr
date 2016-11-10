@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// Doom scene script.
 /// </summary>
-public class DoomSceneScript : MonoBehaviour {
+public class SingleDoomSceneScript : MonoBehaviour {
 
 	/// <summary>
 	/// The m camera.
