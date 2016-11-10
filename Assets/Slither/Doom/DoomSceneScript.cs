@@ -25,7 +25,7 @@ public class DoomSceneScript : MonoBehaviour {
 	/// <summary>
 	/// The move speed.
 	/// </summary>
-	public float move_speed  = 15.0f;
+	public float move_speed  = 10.0f;
 
 	/// <summary>
 	/// The y offset.
@@ -109,7 +109,11 @@ public class DoomSceneScript : MonoBehaviour {
 					m_worm_body [i].gameObject.transform.rotation.y,
 					m_worm_body [i].gameObject.transform.rotation.z
 				));
-				m_worm_body [i].gameObject.transform.position = m_camera.transform.position;
+				m_worm_body [i].gameObject.transform.position = new Vector3(
+					m_camera.transform.position.x,
+					0,
+					m_camera.transform.position.z
+				);
 				m_worm_body [i].gameObject.transform.rotation = m_camera.transform.rotation;
 			} else {
 				Vector3 tmp2_position = new Vector3 (
