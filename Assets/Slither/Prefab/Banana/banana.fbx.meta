@@ -1,21 +1,16 @@
 fileFormatVersion: 2
-guid: d975ccd359c5745ad8fbf07df9efcef9
-timeCreated: 1479013238
+guid: ceac222aceaef41888af4249a3068d9f
+timeCreated: 1479025815
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Camera
-    100004: Cylinder
-    100006: Lamp
     400000: //RootNode
-    400002: Camera
-    400004: Cylinder
-    400006: Lamp
-    2300000: Cylinder
-    3300000: Cylinder
-    4300000: Cylinder
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: banana
+    6400000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -42,7 +37,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
