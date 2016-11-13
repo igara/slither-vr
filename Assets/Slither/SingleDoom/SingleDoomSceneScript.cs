@@ -18,58 +18,87 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	[SerializeField] GameObject m_target_mark;
 
 	/// <summary>
-	/// The m target dummy.
+	/// The m target dummy. ダミーがオブジェクト触れた時にイベントを発生させる
 	/// </summary>
 	[SerializeField] GameObject m_target_dummy;
 
 	/// <summary>
-	/// The move speed.
+	/// The move speed. 動くスピード
 	/// </summary>
 	public float move_speed  = 10.0f;
 
 	/// <summary>
-	/// The y offset.
+	/// The y offset. カメラの位置高さ
 	/// </summary>
 	private float camera_y_offset;
 
-	private float worm_y_offset;
-
 	/// <summary>
-	/// The degree.
+	/// The degree. ミミズが動く角度の範囲
 	/// </summary>
 	const float degree = 30.0f;
 
 	/// <summary>
-	/// The full degree.
+	/// The zero degree. 角度なし
+	/// </summary>
+	const float zero_degree = 0.0f;
+	/// <summary>
+	/// The full degree. 全角度
 	/// </summary>
 	const float full_degree = 360.0f;
 
+	/// <summary>
+	/// The zero position. 0位置
+	/// </summary>
+	const float zero_position = 0.0f;
+
+	/// <summary>
+	/// The size of the half screen. 画面半分のサイズ
+	/// </summary>
+	const float half_screen_size = 250.0f;
+
+	/// <summary>
+	/// The m worm. ミミズ全体のオブジェクト
+	/// </summary>
 	[SerializeField] GameObject m_worm;
 
+	/// <summary>
+	/// The m worm head.
+	/// </summary>
 	[SerializeField] GameObject m_worm_head;
+	/// <summary>
+	/// The m worm left eye.
+	/// </summary>
 	[SerializeField] GameObject m_worm_left_eye;
+	/// <summary>
+	/// The m worm right eye.
+	/// </summary>
 	[SerializeField] GameObject m_worm_right_eye;
 
+	/// <summary>
+	/// The m worm body. ミミズの胴体部分
+	/// </summary>
 	[SerializeField] GameObject[] m_worm_body;
+
+	/// <summary>
+	/// The m item.
+	/// </summary>
+	[SerializeField] GameObject[] m_items;
+
+	/// <summary>
+	/// The m terrain. 地面のゲームオブジェクト
+	/// </summary>
+	[SerializeField] GameObject m_terrain;
+
+	/// <summary>
+	/// The timeleft. 秒計算
+	/// </summary>
+	private float timeleft;
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
 	void Start () {
 		camera_y_offset = m_camera.transform.position.y;
-		worm_y_offset = m_worm_head.transform.position.y;
-		// 親子関係を解除
-//		m_worm.transform.DetachChildren();
-//		// こ　親
-//		m_worm_head.transform.parent = m_camera.transform;
-//		m_worm_left_eye.transform.parent = m_camera.transform;
-//		m_worm_right_eye.transform.parent = m_camera.transform;
-//		m_worm_body_1.transform.parent = m_camera.transform;
-//		m_worm_body_2.transform.parent = m_camera.transform;
-//		m_worm_body_3.transform.parent = m_camera.transform;
-//		m_worm_body_4.transform.parent = m_camera.transform;
-//		m_worm_body_5.transform.parent = m_camera.transform;
-//		m_worm_tail.transform.parent = m_camera.transform;
 	}
 
 	/// <summary>
@@ -80,22 +109,44 @@ public class SingleDoomSceneScript : MonoBehaviour {
 		float x = m_camera.transform.eulerAngles.x;
 
 		// 角度以内なら前進する
-		if ((0.0f <= x && x <= degree) || (full_degree - degree <= x && x <= full_degree)) {
-			moveFoward ();
+		if ((zero_degree <= x && x <= degree) || (full_degree - degree <= x && x <= full_degree)) {
+			MoveFoward ();
 		}
+		// アイテムを作成する
+		CreateItem ();
 	}
 
 	/// <summary>
 	/// Moves the foward.
+	/// 前進する処理
 	/// </summary>
-	private void moveFoward() {
-		Vector3 camera_direction = new Vector3 (m_camera.transform.forward.x, 0, m_camera.transform.forward.z).normalized * move_speed * Time.deltaTime;
-		Quaternion camera_rotation = Quaternion.Euler (new Vector3 (0, -m_camera.transform.rotation.eulerAngles.y, 0));
+	private void MoveFoward() {
+		Vector3 camera_direction = new Vector3 (
+			m_camera.transform.forward.x,
+			zero_position,
+			m_camera.transform.forward.z).normalized * move_speed * Time.deltaTime;
+		Quaternion camera_rotation = Quaternion.Euler (new Vector3 (
+			zero_position,
+			-m_camera.transform.rotation.eulerAngles.y,
+			zero_position
+		));
 		m_camera.transform.Translate (camera_rotation * camera_direction);
-		m_camera.transform.position = new Vector3 (m_camera.transform.position.x, camera_y_offset, m_camera.transform.position.z);
+		m_camera.transform.position = new Vector3 (
+			m_camera.transform.position.x,
+			camera_y_offset,
+			m_camera.transform.position.z
+		);
 
-		Vector3 tmp_position = new Vector3 (0, 0, 0);
-		Quaternion tmp_rotation = new Quaternion(0, 0, 0, 0);
+		Vector3 tmp_position = new Vector3 (
+			zero_position,
+			zero_position,
+			zero_position
+		);
+		Quaternion tmp_rotation = Quaternion.Euler (new Vector3 (
+			zero_degree,
+			zero_degree,
+			zero_degree
+		));
 		for (int i = 0; i < m_worm_body.Length; i++) {
 			// 頭
 			if (i == 0) {
@@ -111,7 +162,7 @@ public class SingleDoomSceneScript : MonoBehaviour {
 				));
 				m_worm_body [i].gameObject.transform.position = new Vector3(
 					m_camera.transform.position.x,
-					0,
+					zero_position,
 					m_camera.transform.position.z
 				);
 				m_worm_body [i].gameObject.transform.rotation = m_camera.transform.rotation;
@@ -132,5 +183,103 @@ public class SingleDoomSceneScript : MonoBehaviour {
 				tmp_rotation = tmp2_rotation;
 			}
 		}
+	}
+
+	/// <summary>
+	/// Creates the item.
+	/// アイテムを生成する処理
+	/// </summary>
+	private void CreateItem() {
+		// 追加するアイテムをランダムで選択する
+		int ramdam_item_index = Random.Range (0, m_items.Length);
+		print (ramdam_item_index);
+		print (m_items.Length);
+
+		// だいたい1秒ごとに処理を行う
+		timeleft -= Time.deltaTime;
+		if (timeleft <= 0.0) {
+			timeleft = 1.0f;
+
+			if (ramdam_item_index == 0) {
+				// バナナを生成
+				CreatedBanana(m_items[ramdam_item_index]);
+			} else if (ramdam_item_index == 1) {
+				// パンを作成
+				CreatedBread(m_items[ramdam_item_index]);
+			} else if (ramdam_item_index == 2) {
+				// ケーキを作成
+			} else if (ramdam_item_index == 3) {
+				// オレンジを作成
+			}
+		}
+
+	}
+
+	/// <summary>
+	/// Gets the banana. バナナを作成する
+	/// </summary>
+	/// <param name="create_item">Create item.</param>
+	private void CreatedBanana(GameObject create_item) {
+		// オブジェクトの座標
+		float position_x = Random.Range(-half_screen_size, half_screen_size);
+		float position_y = 1.8f;
+		float position_z = Random.Range(-half_screen_size, half_screen_size);
+		Vector3 tmp_position = new Vector3 (
+			position_x,
+			position_y,
+			position_z
+		);
+		// オブジェクトの角度
+		float rotation_x = 180.0f;
+		float rotation_y = Random.Range(zero_degree, full_degree);
+		float rotation_z = 0.0f;
+		Quaternion tmp_rotation = Quaternion.Euler (new Vector3 (
+			rotation_x,
+			rotation_y,
+			rotation_z
+		));
+			
+		// オブジェクトを生産
+		GameObject item = (GameObject)Instantiate(
+			create_item,
+			tmp_position,
+			tmp_rotation
+		);
+		// 地面のオブジェクトの子になる様にアイテムを配置を行う
+		item.transform.parent = m_terrain.transform;
+	}
+
+	/// <summary>
+	/// Createds the bread. パンを作成する
+	/// </summary>
+	/// <param name="create_item">Create item.</param>
+	private void CreatedBread(GameObject create_item) {
+		// オブジェクトの座標
+		float position_x = Random.Range(-half_screen_size, half_screen_size);
+		float position_y = 0.0f;
+		float position_z = Random.Range(-half_screen_size, half_screen_size);
+		Vector3 tmp_position = new Vector3 (
+			position_x,
+			position_y,
+			position_z
+		);
+		// オブジェクトの角度
+		float rotation_x = 0.0f;
+		float rotation_y = Random.Range(zero_degree, full_degree);
+		float rotation_z = 0.0f;
+		Quaternion tmp_rotation = Quaternion.Euler (new Vector3 (
+			rotation_x,
+			rotation_y,
+			rotation_z
+		));
+
+		// オブジェクトを生産
+		GameObject item = (GameObject)Instantiate(
+			create_item,
+			tmp_position,
+			tmp_rotation
+		);
+		// 地面のオブジェクトの子になる様にアイテムを配置を行う
+		item.transform.parent = m_terrain.transform;
 	}
 }
