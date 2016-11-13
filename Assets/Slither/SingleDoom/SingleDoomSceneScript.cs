@@ -12,6 +12,11 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// The m camera.
 	/// </summary>
 	[SerializeField] GameObject m_camera;
+	/// <summary>
+	/// The y offset. カメラの位置高さ
+	/// </summary>
+	private float camera_y_offset;
+
 
 	/// <summary>
 	/// The m target mark.赤い×印
@@ -27,11 +32,6 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// The move speed. 動くスピード
 	/// </summary>
 	public float move_speed  = 10.0f;
-
-	/// <summary>
-	/// The y offset. カメラの位置高さ
-	/// </summary>
-	private float camera_y_offset;
 
 	/// <summary>
 	/// The degree. ミミズが動く角度の範囲
@@ -53,15 +53,14 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	const float zero_position = 0.0f;
 
 	/// <summary>
-	/// The size of the half screen. 画面半分のサイズ
+	/// The size of the screen. 画面のサイズ
 	/// </summary>
-	const float half_screen_size = 250.0f;
+	const float screen_size = 500.0f;
 
 	/// <summary>
 	/// The m worm. ミミズ全体のオブジェクト
 	/// </summary>
 	[SerializeField] GameObject m_worm;
-
 	/// <summary>
 	/// The m worm head.
 	/// </summary>
@@ -74,7 +73,6 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// The m worm right eye.
 	/// </summary>
 	[SerializeField] GameObject m_worm_right_eye;
-
 	/// <summary>
 	/// The m worm body. ミミズの胴体部分
 	/// </summary>
@@ -98,10 +96,31 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	private bool gameover_flag = false;
 
 	/// <summary>
+	/// Inits the start position. スタート位置の初期化
+	/// </summary>
+	private void InitStartPosition() {
+		camera_y_offset = m_camera.transform.position.y;
+		// オブジェクトの座標
+		float position_x = Random.Range(zero_position, screen_size);
+		float position_z = Random.Range(zero_position, screen_size);
+		// 虫の開始位置をランダムで
+		m_worm.transform.position = new Vector3 (
+			position_x,
+			m_worm.transform.position.y,
+			position_z
+		);
+		m_camera.transform.position = new Vector3 (
+			position_x,
+			m_camera.transform.position.y,
+			position_z + 5
+		);
+	}
+
+	/// <summary>
 	/// Start this instance.
 	/// </summary>
 	void Start () {
-		camera_y_offset = m_camera.transform.position.y;
+		InitStartPosition ();
 	}
 
 	/// <summary>
@@ -224,9 +243,9 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// <param name="create_item">Create item.</param>
 	private void CreatedBanana(GameObject create_item) {
 		// オブジェクトの座標
-		float position_x = Random.Range(-half_screen_size, half_screen_size);
+		float position_x = Random.Range(zero_position, screen_size);
 		float position_y = 1.5f;
-		float position_z = Random.Range(-half_screen_size, half_screen_size);
+		float position_z = Random.Range(zero_position, screen_size);
 		Vector3 tmp_position = new Vector3 (
 			position_x,
 			position_y,
@@ -258,9 +277,9 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// <param name="create_item">Create item.</param>
 	private void CreatedBread(GameObject create_item) {
 		// オブジェクトの座標
-		float position_x = Random.Range(-half_screen_size, half_screen_size);
+		float position_x = Random.Range(zero_position, screen_size);
 		float position_y = zero_position;
-		float position_z = Random.Range(-half_screen_size, half_screen_size);
+		float position_z = Random.Range(zero_position, screen_size);
 		Vector3 tmp_position = new Vector3 (
 			position_x,
 			position_y,
@@ -292,9 +311,9 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// <param name="create_item">Create item.</param>
 	private void CreatedDonut(GameObject create_item) {
 		// オブジェクトの座標
-		float position_x = Random.Range(-half_screen_size, half_screen_size);
+		float position_x = Random.Range(zero_position, screen_size);
 		float position_y = zero_position;
-		float position_z = Random.Range(-half_screen_size, half_screen_size);
+		float position_z = Random.Range(zero_position, screen_size);
 		Vector3 tmp_position = new Vector3 (
 			position_x,
 			position_y,
