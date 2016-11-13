@@ -24,6 +24,15 @@ public class ChildColliderTrigger : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Raises the trigger exit event.
+	/// </summary>
+	/// <param name="collider">Collider.</param>
+	void OnTriggerExit(Collider collider)
+	{
+		m_parent.SendMessage("RedirectedOnTriggerExit", collider);
+	}
+
+	/// <summary>
 	/// Raises the trigger stay event.
 	/// </summary>
 	/// <param name="collider">Collider.</param>

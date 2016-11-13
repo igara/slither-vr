@@ -93,7 +93,15 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// </summary>
 	private float timeleft;
 
+	/// <summary>
+	/// The gameover flag.
+	/// </summary>
 	private bool gameover_flag = false;
+
+	/// <summary>
+	/// The pose flag.
+	/// </summary>
+	private bool pose_flag = false;
 
 	/// <summary>
 	/// Inits the start position. スタート位置の初期化
@@ -356,6 +364,9 @@ public class SingleDoomSceneScript : MonoBehaviour {
 			// ドーナツと衝突
 			EatItem(collider.gameObject);
 		}
+		if (gameobject_name == "TargetDummy") {
+			SwichPose ();
+		}
 		if (gameobject_name == "Wall1") {
 			SwichGameOver ();
 		} else if (gameobject_name == "Wall2") {
@@ -368,12 +379,24 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Redirecteds the on trigger stay. 子のゲームオブジェクトのcolliderを終了検知する
+	/// Redirecteds the on trigger exit.
+	/// </summary>
+	/// <param name="collider">Collider.</param>
+	public void RedirectedOnTriggerExit (Collider collider)
+	{
+		string gameobject_name = collider.gameObject.name;
+		if (gameobject_name == "TargetDummy") {
+			SwichPose ();
+		}
+	}
+
+	/// <summary>
+	/// Redirecteds the on trigger stay. 子のゲームオブジェクトのcolliderをキープ検知する
 	/// </summary>
 	/// <param name="collider">Collider.</param>
 	public void RedirectedOnTriggerStay (Collider collider)
 	{
-		
+		string gameobject_name = collider.gameObject.name;
 	}
 
 	/// <summary>
@@ -398,6 +421,13 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// Swichs the game over.
 	/// </summary>
 	private void SwichGameOver() {
-		gameover_flag = true;
+		gameover_flag = !gameover_flag;
+	}
+
+	/// <summary>
+	/// Swichs the pose.
+	/// </summary>
+	private void SwichPose() {
+		pose_flag = !pose_flag;
 	}
 }
