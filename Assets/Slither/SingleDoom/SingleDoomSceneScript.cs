@@ -192,8 +192,6 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	private void CreateItem() {
 		// 追加するアイテムをランダムで選択する
 		int ramdam_item_index = Random.Range (0, m_items.Length);
-		print (ramdam_item_index);
-		print (m_items.Length);
 
 		// だいたい1秒ごとに処理を行う
 		timeleft -= Time.deltaTime;
@@ -207,7 +205,8 @@ public class SingleDoomSceneScript : MonoBehaviour {
 				// パンを作成
 				CreatedBread(m_items[ramdam_item_index]);
 			} else if (ramdam_item_index == 2) {
-				// ケーキを作成
+				// ドーナツを作成
+				CreatedDonut(m_items[ramdam_item_index]);
 			} else if (ramdam_item_index == 3) {
 				// オレンジを作成
 			}
@@ -232,7 +231,7 @@ public class SingleDoomSceneScript : MonoBehaviour {
 		// オブジェクトの角度
 		float rotation_x = 180.0f;
 		float rotation_y = Random.Range(zero_degree, full_degree);
-		float rotation_z = 0.0f;
+		float rotation_z = zero_degree;
 		Quaternion tmp_rotation = Quaternion.Euler (new Vector3 (
 			rotation_x,
 			rotation_y,
@@ -256,7 +255,7 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	private void CreatedBread(GameObject create_item) {
 		// オブジェクトの座標
 		float position_x = Random.Range(-half_screen_size, half_screen_size);
-		float position_y = 0.0f;
+		float position_y = zero_position;
 		float position_z = Random.Range(-half_screen_size, half_screen_size);
 		Vector3 tmp_position = new Vector3 (
 			position_x,
@@ -264,9 +263,43 @@ public class SingleDoomSceneScript : MonoBehaviour {
 			position_z
 		);
 		// オブジェクトの角度
-		float rotation_x = 0.0f;
+		float rotation_x = zero_degree;
 		float rotation_y = Random.Range(zero_degree, full_degree);
-		float rotation_z = 0.0f;
+		float rotation_z = zero_degree;
+		Quaternion tmp_rotation = Quaternion.Euler (new Vector3 (
+			rotation_x,
+			rotation_y,
+			rotation_z
+		));
+
+		// オブジェクトを生産
+		GameObject item = (GameObject)Instantiate(
+			create_item,
+			tmp_position,
+			tmp_rotation
+		);
+		// 地面のオブジェクトの子になる様にアイテムを配置を行う
+		item.transform.parent = m_terrain.transform;
+	}
+
+	/// <summary>
+	/// Createds the donut. ドーナツを作成する
+	/// </summary>
+	/// <param name="create_item">Create item.</param>
+	private void CreatedDonut(GameObject create_item) {
+		// オブジェクトの座標
+		float position_x = Random.Range(-half_screen_size, half_screen_size);
+		float position_y = zero_position;
+		float position_z = Random.Range(-half_screen_size, half_screen_size);
+		Vector3 tmp_position = new Vector3 (
+			position_x,
+			position_y,
+			position_z
+		);
+		// オブジェクトの角度
+		float rotation_x = 90.0f;
+		float rotation_y = zero_degree;
+		float rotation_z = zero_degree;
 		Quaternion tmp_rotation = Quaternion.Euler (new Vector3 (
 			rotation_x,
 			rotation_y,
