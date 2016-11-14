@@ -14,14 +14,19 @@ public class TitleSceneScript : MonoBehaviour {
 	[SerializeField] GameObject m_camera;
 
 	/// <summary>
+	/// The m gvr viewer.
+	/// </summary>
+	[SerializeField] GvrViewer m_gvr_viewer;
+
+	/// <summary>
 	/// The m title.
 	/// </summary>
 	[SerializeField] GameObject m_title;
 
 	/// <summary>
-	/// The m start.
+	/// The m single play.
 	/// </summary>
-	[SerializeField] GameObject m_start;
+	[SerializeField] GameObject m_single_play;
 
 	/// <summary>
 	/// The m target mark.赤い×印
@@ -46,7 +51,7 @@ public class TitleSceneScript : MonoBehaviour {
 	/// Start this instance.
 	/// </summary>
 	void Start () {
-
+		GameSetting.vr_mode_flag = true;
 	}
 	
 	/// <summary>
@@ -77,6 +82,11 @@ public class TitleSceneScript : MonoBehaviour {
 			start.text = "SinglePlay";
 			time = 6;
 		}
+		if (collider.gameObject.tag == "VRMode") {
+			TextMesh vrmode = collider.gameObject.GetComponent<TextMesh>();
+			vrmode.text = "VR Mode On";
+			time = 6;
+		}
 	}
 
 	/// <summary>
@@ -95,6 +105,30 @@ public class TitleSceneScript : MonoBehaviour {
 				start.text = time.ToString();
 				if (time == 0) {
 					SceneManager.LoadScene("Slither/SingleDoom/SingleDoomScene");
+					time = 6;
+				}
+			}
+		}
+		if (collider.gameObject.tag == "VRMode") {
+			TextMesh vrmode = collider.gameObject.GetComponent<TextMesh>();
+			//だいたい1秒ごとに処理を行う
+			timeleft -= Time.deltaTime;
+			if (timeleft <= 0.0) {
+				timeleft = 1.0f;
+				time -= 1;
+				vrmode.text = time.ToString();
+				if (time == 0) {
+					if (GameSetting.vr_mode_flag) {
+						vrmode.text = "VR Mode Off";
+						m_gvr_viewer.VRModeEnabled = false;
+						GameSetting.vr_mode_flag = false;
+						time = 6;
+					} else {
+						vrmode.text = "VR Mode On";
+						m_gvr_viewer.VRModeEnabled = true;
+						GameSetting.vr_mode_flag = true;
+						time = 6;
+					}
 				}
 			}
 		}

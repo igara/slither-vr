@@ -16,7 +16,10 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// The y offset. カメラの位置高さ
 	/// </summary>
 	private float camera_y_offset;
-
+	/// <summary>
+	/// The m gvr viewer.
+	/// </summary>
+	[SerializeField] GvrViewer m_gvr_viewer;
 
 	/// <summary>
 	/// The m target mark.赤い×印
@@ -107,6 +110,7 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// Inits the start position. スタート位置の初期化
 	/// </summary>
 	private void InitStartPosition() {
+		
 		camera_y_offset = m_camera.transform.position.y;
 		// オブジェクトの座標
 		float position_x = Random.Range(zero_position, screen_size);
@@ -128,6 +132,7 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// Start this instance.
 	/// </summary>
 	void Start () {
+		m_gvr_viewer.VRModeEnabled = GameSetting.vr_mode_flag;
 		InitStartPosition ();
 	}
 
