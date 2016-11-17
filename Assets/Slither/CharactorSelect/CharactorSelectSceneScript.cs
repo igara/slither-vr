@@ -1,15 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.EventSystems;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Title scene script.
-/// </summary>
-public class TitleSceneScript : MonoBehaviour {
+public class CharactorSelectSceneScript : MonoBehaviour {
 
 	/// <summary>
-	/// The m camera.
+	/// The n camera.
 	/// </summary>
 	[SerializeField] GameObject m_camera;
 
@@ -19,24 +16,14 @@ public class TitleSceneScript : MonoBehaviour {
 	[SerializeField] GvrViewer m_gvr_viewer;
 
 	/// <summary>
-	/// The m title.
-	/// </summary>
-	[SerializeField] GameObject m_title;
-
-	/// <summary>
-	/// The m single play.
-	/// </summary>
-	[SerializeField] GameObject m_single_play;
-
-	/// <summary>
 	/// The m target mark.赤い×印
 	/// </summary>
 	[SerializeField] GameObject m_target_mark;
 
 	/// <summary>
-	/// The m target dummy.
+	/// The m count.
 	/// </summary>
-	[SerializeField] GameObject m_target_dummy;
+	[SerializeField] GameObject m_count;
 
 	/// <summary>
 	/// The timeleft.
@@ -48,17 +35,52 @@ public class TitleSceneScript : MonoBehaviour {
 	private int time = 6;
 
 	/// <summary>
+	/// The m light.
+	/// </summary>
+	[SerializeField] GameObject m_light;
+
+	/// <summary>
+	/// The m target dummy. ダミーがオブジェクト触れた時にイベントを発生させる
+	/// </summary>
+	[SerializeField] GameObject m_target_dummy;
+
+	/// <summary>
+	/// The m worm.
+	/// </summary>
+	[SerializeField] List<GameObject> m_worms;
+
+	/// <summary>
 	/// Start this instance.
 	/// </summary>
 	void Start () {
-		GameSetting.vr_mode_flag = true;
+		m_gvr_viewer.VRModeEnabled = GameSetting.vr_mode_flag;
+		InitWormSetting ();
 	}
 	
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
 	void Update () {
+		UpdateLightRotation ();
+	}
 
+	/// <summary>
+	/// Inits the worm setting.
+	/// </summary>
+	private void InitWormSetting() {
+		foreach (GameObject worm in m_worms) {
+		}
+	}
+
+	/// <summary>
+	/// Updates the light rotation.
+	/// </summary>
+	private void UpdateLightRotation() {
+		m_light.transform.eulerAngles = new Vector3(
+			45,
+			m_camera.transform.localEulerAngles.y,
+			0
+		);
 	}
 
 	/// <summary>
@@ -68,7 +90,6 @@ public class TitleSceneScript : MonoBehaviour {
 	public void RedirectedOnTriggerEnter (Collider collider)
 	{
 		string gameobject_name = collider.gameObject.name;
-
 	}
 
 	/// <summary>
@@ -77,14 +98,10 @@ public class TitleSceneScript : MonoBehaviour {
 	/// <param name="collider">Collider.</param>
 	public void RedirectedOnTriggerExit (Collider collider)
 	{
-		if (collider.gameObject.tag == "SinglePlay") {
-			TextMesh start = collider.gameObject.GetComponent<TextMesh>();
-			start.text = "SinglePlay";
-			time = 6;
-		}
-		if (collider.gameObject.tag == "VRMode") {
-			TextMesh vrmode = collider.gameObject.GetComponent<TextMesh>();
-			vrmode.text = "VR Mode On";
+		string gameobject_tag = collider.gameObject.tag;
+		if (gameobject_tag == "Worm") {
+			TextMesh count = m_count.gameObject.GetComponent<TextMesh>();
+			count.text = "";
 			time = 6;
 		}
 	}
@@ -95,42 +112,21 @@ public class TitleSceneScript : MonoBehaviour {
 	/// <param name="collider">Collider.</param>
 	public void RedirectedOnTriggerStay (Collider collider)
 	{
-		if (collider.gameObject.tag == "SinglePlay") {
-			TextMesh start = collider.gameObject.GetComponent<TextMesh>();
+		string gameobject_tag = collider.gameObject.tag;
+		if (gameobject_tag == "Worm") {
+			TextMesh count = m_count.gameObject.GetComponent<TextMesh>();
 			//だいたい1秒ごとに処理を行う
 			timeleft -= Time.deltaTime;
 			if (timeleft <= 0.0) {
 				timeleft = 1.0f;
 				time -= 1;
-				start.text = time.ToString();
+				count.text = time.ToString();
 				if (time == 0) {
-					SceneManager.LoadScene("Slither/CharactorSelect/CharactorSelectScene");
+					SceneManager.LoadScene("Slither/SingleDoom/SingleDoomScene");
 					time = 6;
 				}
 			}
 		}
-		if (collider.gameObject.tag == "VRMode") {
-			TextMesh vrmode = collider.gameObject.GetComponent<TextMesh>();
-			//だいたい1秒ごとに処理を行う
-			timeleft -= Time.deltaTime;
-			if (timeleft <= 0.0) {
-				timeleft = 1.0f;
-				time -= 1;
-				vrmode.text = time.ToString();
-				if (time == 0) {
-					if (GameSetting.vr_mode_flag) {
-						vrmode.text = "VR Mode Off";
-						m_gvr_viewer.VRModeEnabled = false;
-						GameSetting.vr_mode_flag = false;
-						time = 6;
-					} else {
-						vrmode.text = "VR Mode On";
-						m_gvr_viewer.VRModeEnabled = true;
-						GameSetting.vr_mode_flag = true;
-						time = 6;
-					}
-				}
-			}
-		}
 	}
+
 }
