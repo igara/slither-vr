@@ -69,6 +69,99 @@ public class CharactorSelectSceneScript : MonoBehaviour {
 	/// </summary>
 	private void InitWormSetting() {
 		foreach (GameObject worm in m_worms) {
+			string game_object_name = worm.name;
+			if (game_object_name == "Earthworm1") {
+				Renderer renderer = worm.transform.FindChild("EarthwormBody0").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 0, 0));
+				renderer = worm.transform.FindChild("EarthwormBody1").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 0, 0));
+				renderer = worm.transform.FindChild("EarthwormBody2").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 0, 0));
+				renderer = worm.transform.FindChild("EarthwormBody3").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 0, 0));
+				renderer = worm.transform.FindChild("EarthwormBody4").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 0, 0));
+				renderer = worm.transform.FindChild("EarthwormBody5").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 0, 0));
+			} else if(game_object_name == "Earthworm2") {
+				Renderer renderer = worm.transform.FindChild("EarthwormBody0").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 1, 0));
+				renderer = worm.transform.FindChild("EarthwormBody1").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 1, 0));
+				renderer = worm.transform.FindChild("EarthwormBody2").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 1, 0));
+				renderer = worm.transform.FindChild("EarthwormBody3").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 1, 0));
+				renderer = worm.transform.FindChild("EarthwormBody4").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 1, 0));
+				renderer = worm.transform.FindChild("EarthwormBody5").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 1, 0));
+			} else if(game_object_name == "Earthworm3") {
+				Renderer renderer = worm.transform.FindChild("EarthwormBody0").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 1, 0));
+				renderer = worm.transform.FindChild("EarthwormBody1").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 1, 0));
+				renderer = worm.transform.FindChild("EarthwormBody2").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 1, 0));
+				renderer = worm.transform.FindChild("EarthwormBody3").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 1, 0));
+				renderer = worm.transform.FindChild("EarthwormBody4").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 1, 0));
+				renderer = worm.transform.FindChild("EarthwormBody5").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 1, 0));
+			} else if(game_object_name == "Earthworm4") {
+				Renderer renderer = worm.transform.FindChild("EarthwormBody0").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 1, 1));
+				renderer = worm.transform.FindChild("EarthwormBody1").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 1, 1));
+				renderer = worm.transform.FindChild("EarthwormBody2").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 1, 1));
+				renderer = worm.transform.FindChild("EarthwormBody3").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 1, 1));
+				renderer = worm.transform.FindChild("EarthwormBody4").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 1, 1));
+				renderer = worm.transform.FindChild("EarthwormBody5").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 1, 1));
+			} else if(game_object_name == "Earthworm5") {
+				Renderer renderer = worm.transform.FindChild("EarthwormBody0").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 0, 1));
+				renderer = worm.transform.FindChild("EarthwormBody1").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 0, 1));
+				renderer = worm.transform.FindChild("EarthwormBody2").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 0, 1));
+				renderer = worm.transform.FindChild("EarthwormBody3").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 0, 1));
+				renderer = worm.transform.FindChild("EarthwormBody4").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 0, 1));
+				renderer = worm.transform.FindChild("EarthwormBody5").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(1, 0, 1));
+			} else if(game_object_name == "Earthworm6") {
+				Renderer renderer = worm.transform.FindChild("EarthwormBody0").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 0, 1));
+				renderer = worm.transform.FindChild("EarthwormBody1").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 0, 1));
+				renderer = worm.transform.FindChild("EarthwormBody2").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 0, 1));
+				renderer = worm.transform.FindChild("EarthwormBody3").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 0, 1));
+				renderer = worm.transform.FindChild("EarthwormBody4").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 0, 1));
+				renderer = worm.transform.FindChild("EarthwormBody5").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0, 0, 1));
+			} else if(game_object_name == "Earthworm7") {
+				Renderer renderer = worm.transform.FindChild("EarthwormBody0").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0.5f, 0.5f, 0.5f));
+				renderer = worm.transform.FindChild("EarthwormBody1").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0.5f, 0.5f, 0.5f));
+				renderer = worm.transform.FindChild("EarthwormBody2").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0.5f, 0.5f, 0.5f));
+				renderer = worm.transform.FindChild("EarthwormBody3").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0.5f, 0.5f, 0.5f));
+				renderer = worm.transform.FindChild("EarthwormBody4").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0.5f, 0.5f, 0.5f));
+				renderer = worm.transform.FindChild("EarthwormBody5").gameObject.GetComponent<Renderer>();
+				renderer.material.SetColor("_EmissionColor", new Color(0.5f, 0.5f, 0.5f));
+			}
 		}
 	}
 
@@ -122,6 +215,8 @@ public class CharactorSelectSceneScript : MonoBehaviour {
 				time -= 1;
 				count.text = time.ToString();
 				if (time == 0) {
+					Renderer renderer = collider.gameObject.transform.FindChild("EarthwormBody0").gameObject.GetComponent<Renderer>();
+					GameSetting.select_worm_color = renderer.material.GetColor("_EmissionColor");
 					SceneManager.LoadScene("Slither/SingleDoom/SingleDoomScene");
 					time = 6;
 				}

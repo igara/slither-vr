@@ -115,6 +115,19 @@ public class SingleDoomSceneScript : MonoBehaviour {
 		// オブジェクトの座標
 		float position_x = Random.Range(zero_position, screen_size);
 		float position_z = Random.Range(zero_position, screen_size);
+
+		Renderer renderer = m_worm.transform.FindChild("EarthwormBody0").gameObject.GetComponent<Renderer>();
+		renderer.material.color = GameSetting.select_worm_color;
+		renderer = m_worm.transform.FindChild("EarthwormBody1").gameObject.GetComponent<Renderer>();
+		renderer.material.color = GameSetting.select_worm_color;
+		renderer = m_worm.transform.FindChild("EarthwormBody2").gameObject.GetComponent<Renderer>();
+		renderer.material.color = GameSetting.select_worm_color;
+		renderer = m_worm.transform.FindChild("EarthwormBody3").gameObject.GetComponent<Renderer>();
+		renderer.material.color = GameSetting.select_worm_color;
+		renderer = m_worm.transform.FindChild("EarthwormBody4").gameObject.GetComponent<Renderer>();
+		renderer.material.color = GameSetting.select_worm_color;
+		renderer = m_worm.transform.FindChild("EarthwormBody5").gameObject.GetComponent<Renderer>();
+		renderer.material.color = GameSetting.select_worm_color;
 		// 虫の開始位置をランダムで
 		m_worm.transform.position = new Vector3 (
 			position_x,

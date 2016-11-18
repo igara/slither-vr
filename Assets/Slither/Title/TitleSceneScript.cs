@@ -51,7 +51,6 @@ public class TitleSceneScript : MonoBehaviour {
 	/// Start this instance.
 	/// </summary>
 	void Start () {
-		GameSetting.vr_mode_flag = true;
 	}
 	
 	/// <summary>
