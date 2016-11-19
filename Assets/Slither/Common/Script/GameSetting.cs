@@ -12,4 +12,9 @@ public class GameSetting {
 	/// The color of the select worm.
 	/// </summary>
 	public static Color select_worm_color;
+
+	/// <summary>
+	/// The game mode status.
+	/// </summary>
+	public static string game_mode_status = null;
 }

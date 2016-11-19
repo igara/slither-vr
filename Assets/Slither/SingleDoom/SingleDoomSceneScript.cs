@@ -107,6 +107,16 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	private bool pose_flag = false;
 
 	/// <summary>
+	/// The audio source.
+	/// </summary>
+	[SerializeField] AudioSource[] audio_source;
+
+	enum Sound {
+		Eat,
+		Explosion
+	}
+
+	/// <summary>
 	/// Inits the start position. スタート位置の初期化
 	/// </summary>
 	private void InitStartPosition() {
@@ -142,11 +152,19 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Inits the sound.
+	/// </summary>
+	private void InitSound() {
+		audio_source = gameObject.GetComponents<AudioSource>();
+	}
+
+	/// <summary>
 	/// Start this instance.
 	/// </summary>
 	void Start () {
 		m_gvr_viewer.VRModeEnabled = GameSetting.vr_mode_flag;
 		InitStartPosition ();
+		InitSound ();
 	}
 
 	/// <summary>
@@ -422,6 +440,7 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// </summary>
 	private void EatItem(GameObject item) {
 		Destroy (item);
+		audio_source[(int)Sound.Eat].Play();
 		// オブジェクトを生産
 		GameObject new_body = (GameObject)Instantiate(
 			m_worm_body [m_worm_body.Count - 1],
@@ -440,6 +459,7 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// </summary>
 	private void SwichGameOver() {
 		gameover_flag = !gameover_flag;
+		audio_source[(int)Sound.Explosion].Play ();
 	}
 
 	/// <summary>

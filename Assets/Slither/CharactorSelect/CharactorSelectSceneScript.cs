@@ -217,7 +217,11 @@ public class CharactorSelectSceneScript : MonoBehaviour {
 				if (time == 0) {
 					Renderer renderer = collider.gameObject.transform.FindChild("EarthwormBody0").gameObject.GetComponent<Renderer>();
 					GameSetting.select_worm_color = renderer.material.GetColor("_Color");
-					SceneManager.LoadScene("Slither/SingleDoom/SingleDoomScene");
+					if ((GameSetting.game_mode_status ?? "Single") == "Single") {
+						SceneManager.LoadScene ("Slither/SingleDoom/SingleDoomScene");
+					} else if (GameSetting.game_mode_status == "Multi") {
+						SceneManager.LoadScene ("Slither/MultiDoom/MultiDoomScene");
+					}
 					time = 6;
 				}
 			}
