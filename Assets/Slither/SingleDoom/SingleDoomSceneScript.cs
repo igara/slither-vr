@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Doom scene script.
@@ -111,9 +112,11 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// </summary>
 	[SerializeField] AudioSource[] audio_source;
 
+	/// <summary>
+	/// Sound.
+	/// </summary>
 	enum Sound {
-		Eat,
-		Explosion
+		Eat
 	}
 
 	/// <summary>
@@ -152,19 +155,11 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Inits the sound.
-	/// </summary>
-	private void InitSound() {
-		audio_source = gameObject.GetComponents<AudioSource>();
-	}
-
-	/// <summary>
 	/// Start this instance.
 	/// </summary>
 	void Start () {
 		m_gvr_viewer.VRModeEnabled = GameSetting.vr_mode_flag;
 		InitStartPosition ();
-		InitSound ();
 	}
 
 	/// <summary>
@@ -459,7 +454,7 @@ public class SingleDoomSceneScript : MonoBehaviour {
 	/// </summary>
 	private void SwichGameOver() {
 		gameover_flag = !gameover_flag;
-		audio_source[(int)Sound.Explosion].Play ();
+		SceneManager.LoadScene("Slither/GameOver/GameOverScene");
 	}
 
 	/// <summary>

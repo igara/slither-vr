@@ -1,27 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Title scene script.
-/// </summary>
-public class TitleSceneScript : MonoBehaviour {
-
-	/// <summary>
-	/// The m camera.
-	/// </summary>
-	[SerializeField] GameObject m_camera;
+public class GameOverSceneScript : MonoBehaviour {
 
 	/// <summary>
 	/// The m gvr viewer.
 	/// </summary>
 	[SerializeField] GvrViewer m_gvr_viewer;
-
-	/// <summary>
-	/// The m title.
-	/// </summary>
-	[SerializeField] GameObject m_title;
 
 	/// <summary>
 	/// The m target mark.赤い×印
@@ -43,11 +29,25 @@ public class TitleSceneScript : MonoBehaviour {
 	private int time = 6;
 
 	/// <summary>
+	/// The audio source.
+	/// </summary>
+	[SerializeField] AudioSource[] audio_source;
+
+	/// <summary>
+	/// Sound.
+	/// </summary>
+	enum Sound {
+		Explosion
+	}
+
+	/// <summary>
 	/// Start this instance.
 	/// </summary>
 	void Start () {
+		m_gvr_viewer.VRModeEnabled = GameSetting.vr_mode_flag;
+		audio_source[(int)Sound.Explosion].Play();
 	}
-	
+
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
