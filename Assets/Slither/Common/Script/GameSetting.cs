@@ -17,4 +17,9 @@ public class GameSetting {
 	/// The game mode status.
 	/// </summary>
 	public static string game_mode_status = null;
+
+    /// <summary>
+    /// The websoket server.
+    /// </summary>
+    public static string websoket_server = "ws://localhost:port";
 }
