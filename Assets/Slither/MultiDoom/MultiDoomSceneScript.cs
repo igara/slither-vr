@@ -133,6 +133,8 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	/// </summary>
 	private UserData user_data;
 
+	private Dictionary<string, UserData> user_data_dic;
+
 	/// <summary>
 	/// Inits the start position. スタート位置の初期化
 	/// </summary>
@@ -172,27 +174,33 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	/// Inits the web socket.
 	/// </summary>
 	private void InitWebSocket() {
+		user_data_dic = new Dictionary<string, UserData>();
 		web_socket = new WebSocket(GameSetting.websoket_server);
 
 		web_socket.Connect();
 		web_socket.OnMessage += (object sender, MessageEventArgs e) =>
 		{
-            UserData another_user_data = new UserData();
-            try {
-                another_user_data = JsonUtility.FromJson<UserData>(e.Data);
-            } catch {
-                // client_idを取得
+			UserData another_user_data = new UserData();
+			try {
+				another_user_data = JsonUtility.FromJson<UserData>(e.Data);
+			} catch {
+				// client_idを取得
 				if (client_id == null) {
 					client_id = e.Data;
 				}
-                return;
+				return;
 			}
 			if (another_user_data.client_id != client_id) {
 				// 違うユーザ
-				print(another_user_data.count);
+				if (user_data_dic.ContainsKey(another_user_data.client_id)) {
+					// すでにユーザが存在するとき
+					user_data_dic[another_user_data.client_id] = another_user_data;
+				} else {
+					// ユーザが存在しないとき
+					user_data_dic.Add(another_user_data.client_id, another_user_data);
+				}
 			} else if(another_user_data.client_id == client_id) {
 				// 同じユーザ
-				print(another_user_data.count);
 			}
 		};
 	}
@@ -471,13 +479,29 @@ public class MultiDoomSceneScript : MonoBehaviour {
 		}
 	}
 
-    /// <summary>
-    /// Createds the Another User. 他のユーザを作成する
-    /// </summary>
-    /// <param name="user_data">User data.</param>
-    private void CreatedAnotherUser(UserData user_data) {
+	/// <summary>
+	/// Createds the Another User. 他のユーザを作成する
+	/// </summary>
+	/// <param name="user_data">User data.</param>
+	private void CreatedAnotherUser(UserData user_data) {
+		try {
+			GameObject.Find (user_data.client_id);
+			// すでにこのユーザが作成されていたとき
 
-    }
+		} catch {
+			// ユーザが作成されていないとき
+			// オブジェクトを生産
+			GameObject user = (GameObject)Instantiate(
+					m_worm_head,
+				// オブジェクトの座標
+					user_data.position,
+				// オブジェクトの角度
+					user_data.rotation
+			);
+			// 地面のオブジェクトの子になる様にアイテムを配置を行う
+			user.transform.parent = m_terrain.transform;
+		}
+	}
 
 	/// <summary>
 	/// Redirecteds the on trigger exit.
@@ -538,16 +562,16 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	/// メモリの限界が来たとき
 	/// </summary>
 	/// <param name="message"></param>
-    public void DidReceiveMemoryWarning (string message) {
-        System.GC.Collect ();
-        Resources.UnloadUnusedAssets ();
-    }
+	public void DidReceiveMemoryWarning (string message) {
+		System.GC.Collect ();
+		Resources.UnloadUnusedAssets ();
+	}
 
 	/// <summary>
 	///
 	/// </summary>
-    void OnDisable() {
-        
-        web_socket.Close();
-    }
+	void OnDisable() {
+
+		web_socket.Close();
+	}
 }
