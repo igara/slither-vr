@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.EventSystems;
+﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using WebSocketSharp;
-using WebSocketSharp.Net;
 
 public class MultiDoomSceneScript : MonoBehaviour {
 
@@ -150,8 +148,8 @@ public class MultiDoomSceneScript : MonoBehaviour {
 
 		camera_y_offset = m_camera.transform.position.y;
 		// オブジェクトの座標
-		float position_x = Random.Range(zero_position, screen_size);
-		float position_z = Random.Range(zero_position, screen_size);
+		float position_x = UnityEngine.Random.Range(zero_position, screen_size);
+		float position_z = UnityEngine.Random.Range(zero_position, screen_size);
 
 		Renderer renderer = m_worm.transform.FindChild("EarthwormBody0").gameObject.GetComponent<Renderer>();
 		renderer.material.color = GameSetting.select_worm_color;
@@ -281,43 +279,60 @@ public class MultiDoomSceneScript : MonoBehaviour {
 							user_data.rotation
 					);
 					item.name = client_id;
-					GameObject body = item.transform.FindChild("EarthwormBody0").gameObject;
-					Renderer renderer = body.GetComponent<Renderer>();
-					renderer.material.color = user_data.color;
 
-					body = item.transform.FindChild("EarthwormBody1").gameObject;
-					renderer = body.GetComponent<Renderer>();
-					renderer.material.color = user_data.color;
-
-					body = item.transform.FindChild("EarthwormBody2").gameObject;
-					renderer = body.GetComponent<Renderer>();
-					renderer.material.color = user_data.color;
-
-					body = item.transform.FindChild("EarthwormBody3").gameObject;
-					renderer = body.GetComponent<Renderer>();
-					renderer.material.color = user_data.color;
-
-					body = item.transform.FindChild("EarthwormBody4").gameObject;
-					renderer = body.GetComponent<Renderer>();
-					renderer.material.color = user_data.color;
-
-					body = item.transform.FindChild("EarthwormBody5").gameObject;
-					renderer = body.GetComponent<Renderer>();
-					renderer.material.color = user_data.color;
-
+					foreach (Transform body_transform in item.transform) {
+                        Renderer renderer = body_transform.GetComponent<Renderer>();
+                        renderer.material.color = user_data.color;
+                    }
 					// 地面のオブジェクトの子になる様にアイテムを配置を行う
 					item.transform.parent = m_another_user.transform;
 				} else {
 					// 他のユーザのゲームオブジェクトがある時
-                    for (int n = 0; n < user_data.count; n++) {
-
-                    }
 					GameObject item = GameObject.Find(client_id);
-					item.transform.position = new Vector3 (
-							user_data.position.x,
-							0,
-							user_data.position.z
-					);
+                    Vector3 tmp_position = new Vector3 (
+                            zero_position,
+                            zero_position,
+                            zero_position
+                    );
+                    Quaternion tmp_rotation = Quaternion.Euler (new Vector3 (
+                            zero_degree,
+                            zero_degree,
+                            zero_degree
+                    ));
+                    foreach (Transform body_transform in item.transform) {
+                        if (body_transform.name == "EarthwormBody0") {
+                            tmp_position = new Vector3 (
+                                    body_transform.gameObject.transform.position.x,
+                                    body_transform.gameObject.transform.position.y,
+                                    body_transform.gameObject.transform.position.z
+                            );
+                            tmp_rotation = Quaternion.Euler (new Vector3 (
+                                    body_transform.gameObject.transform.rotation.x,
+                                    body_transform.gameObject.transform.rotation.y,
+                                    body_transform.gameObject.transform.rotation.z
+                            ));
+							body_transform.transform.position = new Vector3(
+									user_data.position.x,
+									0,
+									user_data.position.z
+							);
+						} else {
+                            Vector3 tmp2_position = new Vector3 (
+                                    body_transform.gameObject.transform.position.x,
+                                    body_transform.gameObject.transform.position.y,
+                                    body_transform.gameObject.transform.position.z
+                            );
+                            Quaternion tmp2_rotation = Quaternion.Euler (new Vector3 (
+                                    body_transform.gameObject.transform.rotation.x,
+                                    body_transform.gameObject.transform.rotation.y,
+                                    body_transform.gameObject.transform.rotation.z
+                            ));
+                            body_transform.gameObject.transform.position = tmp_position;
+                            body_transform.gameObject.transform.rotation = tmp_rotation;
+                            tmp_position = tmp2_position;
+                            tmp_rotation = tmp2_rotation;
+                        }
+                    }
 					item.transform.rotation = user_data.rotation;
 				}
 			}
@@ -399,22 +414,22 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	/// </summary>
 	private void CreateItem() {
 		// 追加するアイテムをランダムで選択する
-		int ramdam_item_index = Random.Range (0, m_items.Count);
+		int randam_item_index = UnityEngine.Random.Range (0, m_items.Count);
 
 		// だいたい1秒ごとに処理を行う
 		timeleft -= Time.deltaTime;
 		if (timeleft <= 0.0) {
 			timeleft = 1.0f;
 
-			if (ramdam_item_index == 0) {
+			if (randam_item_index == 0) {
 				// バナナを生成
-				CreatedBanana(m_items[ramdam_item_index]);
-			} else if (ramdam_item_index == 1) {
+				CreatedBanana(m_items[randam_item_index]);
+			} else if (randam_item_index == 1) {
 				// パンを作成
-				CreatedBread(m_items[ramdam_item_index]);
-			} else if (ramdam_item_index == 2) {
+				CreatedBread(m_items[randam_item_index]);
+			} else if (randam_item_index == 2) {
 				// ドーナツを作成
-				CreatedDonut(m_items[ramdam_item_index]);
+				CreatedDonut(m_items[randam_item_index]);
 			}
 		}
 
@@ -426,9 +441,9 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	/// <param name="create_item">Create item.</param>
 	private void CreatedBanana(GameObject create_item) {
 		// オブジェクトの座標
-		float position_x = Random.Range(zero_position, screen_size);
+		float position_x = UnityEngine.Random.Range(zero_position, screen_size);
 		float position_y = 1.5f;
-		float position_z = Random.Range(zero_position, screen_size);
+		float position_z = UnityEngine.Random.Range(zero_position, screen_size);
 		Vector3 tmp_position = new Vector3 (
 			position_x,
 			position_y,
@@ -436,7 +451,7 @@ public class MultiDoomSceneScript : MonoBehaviour {
 		);
 		// オブジェクトの角度
 		float rotation_x = zero_degree;
-		float rotation_y = Random.Range(zero_degree, full_degree);
+		float rotation_y = UnityEngine.Random.Range(zero_degree, full_degree);
 		float rotation_z = 90;
 		Quaternion tmp_rotation = Quaternion.Euler (new Vector3 (
 			rotation_x,
@@ -460,9 +475,9 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	/// <param name="create_item">Create item.</param>
 	private void CreatedBread(GameObject create_item) {
 		// オブジェクトの座標
-		float position_x = Random.Range(zero_position, screen_size);
+		float position_x = UnityEngine.Random.Range(zero_position, screen_size);
 		float position_y = zero_position;
-		float position_z = Random.Range(zero_position, screen_size);
+		float position_z = UnityEngine.Random.Range(zero_position, screen_size);
 		Vector3 tmp_position = new Vector3 (
 			position_x,
 			position_y,
@@ -470,7 +485,7 @@ public class MultiDoomSceneScript : MonoBehaviour {
 		);
 		// オブジェクトの角度
 		float rotation_x = zero_degree;
-		float rotation_y = Random.Range(zero_degree, full_degree);
+		float rotation_y = UnityEngine.Random.Range(zero_degree, full_degree);
 		float rotation_z = zero_degree;
 		Quaternion tmp_rotation = Quaternion.Euler (new Vector3 (
 			rotation_x,
@@ -494,9 +509,9 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	/// <param name="create_item">Create item.</param>
 	private void CreatedDonut(GameObject create_item) {
 		// オブジェクトの座標
-		float position_x = Random.Range(zero_position, screen_size);
+		float position_x = UnityEngine.Random.Range(zero_position, screen_size);
 		float position_y = zero_position;
-		float position_z = Random.Range(zero_position, screen_size);
+		float position_z = UnityEngine.Random.Range(zero_position, screen_size);
 		Vector3 tmp_position = new Vector3 (
 			position_x,
 			position_y,
@@ -647,6 +662,6 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	/// </summary>
 	void OnDisable() {
 
-		web_socket.Close();
+		web_socket.Close(CloseStatusCode.Normal, client_id);
 	}
 }
