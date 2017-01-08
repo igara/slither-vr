@@ -301,41 +301,46 @@ public class MultiDoomSceneScript : MonoBehaviour {
                             zero_degree,
                             zero_degree
                     ));
-                    foreach (Transform body_transform in item.transform) {
-                        if (body_transform.name == "EarthwormBody0") {
-                            tmp_position = new Vector3 (
-                                    body_transform.gameObject.transform.position.x,
-                                    body_transform.gameObject.transform.position.y,
-                                    body_transform.gameObject.transform.position.z
-                            );
-                            tmp_rotation = Quaternion.Euler (new Vector3 (
-                                    body_transform.gameObject.transform.rotation.x,
-                                    body_transform.gameObject.transform.rotation.y,
-                                    body_transform.gameObject.transform.rotation.z
-                            ));
-							body_transform.transform.position = new Vector3(
-									user_data.position.x,
-									0,
-									user_data.position.z
-							);
-						} else {
-                            Vector3 tmp2_position = new Vector3 (
-                                    body_transform.gameObject.transform.position.x,
-                                    body_transform.gameObject.transform.position.y,
-                                    body_transform.gameObject.transform.position.z
-                            );
-                            Quaternion tmp2_rotation = Quaternion.Euler (new Vector3 (
-                                    body_transform.gameObject.transform.rotation.x,
-                                    body_transform.gameObject.transform.rotation.y,
-                                    body_transform.gameObject.transform.rotation.z
-                            ));
-                            body_transform.gameObject.transform.position = tmp_position;
-                            body_transform.gameObject.transform.rotation = tmp_rotation;
-                            tmp_position = tmp2_position;
-                            tmp_rotation = tmp2_rotation;
+                    for (int n = 0; n < user_data.count; n++) {
+                        if (item.transform.Find("EarthwormBody" + n)) {
+                            // リアルタイムで胴体のオブジェクトが存在している時
+                            GameObject body = item.transform.Find("EarthwormBody" + n).gameObject;
+                            if ("EarthwormBody" + n == "EarthwormBody0") {
+                                tmp_position = new Vector3 (
+                                        body.transform.position.x,
+                                        body.transform.position.y,
+                                        body.transform.position.z
+                                );
+                                tmp_rotation = Quaternion.Euler (new Vector3 (
+                                        body.transform.rotation.x,
+                                        body.transform.rotation.y,
+                                        body.transform.rotation.z
+                                ));
+                                body.transform.position = new Vector3(
+                                        user_data.position.x,
+                                        0,
+                                        user_data.position.z
+                                );
+                            } else {
+								Vector3 tmp2_position = new Vector3(
+										body.transform.position.x,
+										body.transform.position.y,
+										body.transform.position.z
+								);
+								Quaternion tmp2_rotation = Quaternion.Euler(new Vector3(
+										body.transform.rotation.x,
+										body.transform.rotation.y,
+										body.transform.rotation.z
+								));
+								body.transform.position = tmp_position;
+								body.transform.rotation = tmp_rotation;
+								tmp_position = tmp2_position;
+								tmp_rotation = tmp2_rotation;
+							}
+                        } else {
+                            // リアルタイムに胴体が存在していない時
                         }
                     }
-					item.transform.rotation = user_data.rotation;
 				}
 			}
 		}
