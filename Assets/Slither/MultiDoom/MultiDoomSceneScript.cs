@@ -114,14 +114,14 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	/// <summary>
 	/// Sound.
 	/// </summary>
-	enum Sound {
+	private enum Sound {
 		Eat
 	}
 
 	/// <summary>
 	/// The web socket.
 	/// </summary>
-	WebSocket web_socket;
+	private WebSocket web_socket;
 
 	/// <summary>
 	/// The client identifier.
@@ -133,7 +133,15 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	/// </summary>
 	private UserData user_data;
 
+	/// <summary>
+	/// The user data dic.
+	/// </summary>
 	private Dictionary<string, UserData> user_data_dic;
+
+	/// <summary>
+	/// The m another user. 他のユーザの集まりを管理
+	/// </summary>
+	[SerializeField] GameObject m_another_user;
 
 	/// <summary>
 	/// Inits the start position. スタート位置の初期化
@@ -182,9 +190,9 @@ public class MultiDoomSceneScript : MonoBehaviour {
 		{
 			UserData another_user_data = new UserData();
 			try {
+				// client_idを取得
 				another_user_data = JsonUtility.FromJson<UserData>(e.Data);
 			} catch {
-				// client_idを取得
 				if (client_id == null) {
 					client_id = e.Data;
 				}
@@ -195,9 +203,11 @@ public class MultiDoomSceneScript : MonoBehaviour {
 				if (user_data_dic.ContainsKey(another_user_data.client_id)) {
 					// すでにユーザが存在するとき
 					user_data_dic[another_user_data.client_id] = another_user_data;
+//					print("存在する時");
 				} else {
 					// ユーザが存在しないとき
 					user_data_dic.Add(another_user_data.client_id, another_user_data);
+//					print("存在しない時");
 				}
 			} else if(another_user_data.client_id == client_id) {
 				// 同じユーザ
@@ -221,6 +231,7 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	void Update () {
 		if (!gameover_flag) {
 			FetchWebSocket ();
+			FetchUser();
 			// 現在の角度を取得する
 			float x = m_camera.transform.eulerAngles.x;
 
@@ -234,7 +245,7 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Updates the web socket.
+	/// Fetch the web socket.
 	/// </summary>
 	private void FetchWebSocket() {
 		if (client_id != null) {
@@ -247,6 +258,69 @@ public class MultiDoomSceneScript : MonoBehaviour {
 
 			string json = JsonUtility.ToJson(user_data);
 			web_socket.Send (json);
+		}
+	}
+
+	/// <summary>
+	/// Fetch the user.
+	/// </summary>
+	private void FetchUser() {
+		if (user_data_dic != null) {
+			Dictionary<string, UserData> user_data_tmp = user_data_dic;
+			List<string> client_ids = new List<string>(user_data_tmp.Keys);
+			foreach (string client_id in client_ids) {
+				// DicからUserDataを取り出す
+				UserData user_data = user_data_tmp[client_id];
+				if (GameObject.Find (client_id) == null) {
+					// 他のユーザのゲームオブジェクトがない時
+					GameObject user = m_worm;
+					// オブジェクトを生産
+					GameObject item = (GameObject)Instantiate(
+							user,
+							user_data.position,
+							user_data.rotation
+					);
+					item.name = client_id;
+					GameObject body = item.transform.FindChild("EarthwormBody0").gameObject;
+					Renderer renderer = body.GetComponent<Renderer>();
+					renderer.material.color = user_data.color;
+
+					body = item.transform.FindChild("EarthwormBody1").gameObject;
+					renderer = body.GetComponent<Renderer>();
+					renderer.material.color = user_data.color;
+
+					body = item.transform.FindChild("EarthwormBody2").gameObject;
+					renderer = body.GetComponent<Renderer>();
+					renderer.material.color = user_data.color;
+
+					body = item.transform.FindChild("EarthwormBody3").gameObject;
+					renderer = body.GetComponent<Renderer>();
+					renderer.material.color = user_data.color;
+
+					body = item.transform.FindChild("EarthwormBody4").gameObject;
+					renderer = body.GetComponent<Renderer>();
+					renderer.material.color = user_data.color;
+
+					body = item.transform.FindChild("EarthwormBody5").gameObject;
+					renderer = body.GetComponent<Renderer>();
+					renderer.material.color = user_data.color;
+
+					// 地面のオブジェクトの子になる様にアイテムを配置を行う
+					item.transform.parent = m_another_user.transform;
+				} else {
+					// 他のユーザのゲームオブジェクトがある時
+                    for (int n = 0; n < user_data.count; n++) {
+
+                    }
+					GameObject item = GameObject.Find(client_id);
+					item.transform.position = new Vector3 (
+							user_data.position.x,
+							0,
+							user_data.position.z
+					);
+					item.transform.rotation = user_data.rotation;
+				}
+			}
 		}
 	}
 
@@ -538,6 +612,7 @@ public class MultiDoomSceneScript : MonoBehaviour {
 		);
 		// 芋虫のオブジェクトの子になる様にアイテムを配置を行う
 		new_body.transform.parent = m_worm.transform;
+        new_body.name = "EarthwormBody" + m_worm_body.Count;
 		// 子のオブジェクトにした時にスケールは変更させない
 		new_body.transform.localScale = Vector3.one;
 		m_worm_body.Add (new_body);
