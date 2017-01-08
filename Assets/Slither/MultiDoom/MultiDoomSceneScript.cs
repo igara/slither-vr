@@ -113,7 +113,8 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	/// Sound.
 	/// </summary>
 	private enum Sound {
-		Eat
+		Eat,
+        BGM
 	}
 
 	/// <summary>
@@ -217,6 +218,7 @@ public class MultiDoomSceneScript : MonoBehaviour {
 	/// Start this instance.
 	/// </summary>
 	void Start () {
+        audio_source[(int)Sound.BGM].Play();
 		m_gvr_viewer.VRModeEnabled = GameSetting.vr_mode_flag;
 		InitStartPosition ();
 		InitWebSocket ();
