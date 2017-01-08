@@ -71,19 +71,9 @@ public class GameOverSceneScript : MonoBehaviour {
 	/// <param name="collider">Collider.</param>
 	public void RedirectedOnTriggerExit (Collider collider)
 	{
-		if (collider.gameObject.tag == "SinglePlay") {
-			TextMesh start = collider.gameObject.GetComponent<TextMesh>();
-			start.text = "SinglePlay";
-			time = 6;
-		}
-		if (collider.gameObject.tag == "MultiPlay") {
-			TextMesh multi = collider.gameObject.GetComponent<TextMesh>();
-			multi.text = "MultiPlay";
-			time = 6;
-		}
-		if (collider.gameObject.tag == "VRMode") {
-			TextMesh vrmode = collider.gameObject.GetComponent<TextMesh>();
-			vrmode.text = "VR Mode On";
+		if (collider.gameObject.tag == "ReturnTitle") {
+			TextMesh title = collider.gameObject.GetComponent<TextMesh>();
+			title.text = "ReturnTitle";
 			time = 6;
 		}
 	}
@@ -94,56 +84,17 @@ public class GameOverSceneScript : MonoBehaviour {
 	/// <param name="collider">Collider.</param>
 	public void RedirectedOnTriggerStay (Collider collider)
 	{
-		if (collider.gameObject.tag == "SinglePlay") {
-			TextMesh start = collider.gameObject.GetComponent<TextMesh>();
+		if (collider.gameObject.tag == "ReturnTitle") {
+			TextMesh title = collider.gameObject.GetComponent<TextMesh>();
 			//だいたい1秒ごとに処理を行う
 			timeleft -= Time.deltaTime;
 			if (timeleft <= 0.0) {
 				timeleft = 1.0f;
 				time -= 1;
-				start.text = time.ToString();
+				title.text = time.ToString();
 				if (time == 0) {
-					GameSetting.game_mode_status = "Single";
-					SceneManager.LoadScene("Slither/CharactorSelect/CharactorSelectScene");
+					SceneManager.LoadScene("Slither/Title/TitleScene");
 					time = 6;
-				}
-			}
-		}
-		if (collider.gameObject.tag == "MultiPlay") {
-			TextMesh start = collider.gameObject.GetComponent<TextMesh>();
-			//だいたい1秒ごとに処理を行う
-			timeleft -= Time.deltaTime;
-			if (timeleft <= 0.0) {
-				timeleft = 1.0f;
-				time -= 1;
-				start.text = time.ToString();
-				if (time == 0) {
-					GameSetting.game_mode_status = "Multi";
-					SceneManager.LoadScene("Slither/CharactorSelect/CharactorSelectScene");
-					time = 6;
-				}
-			}
-		}
-		if (collider.gameObject.tag == "VRMode") {
-			TextMesh vrmode = collider.gameObject.GetComponent<TextMesh>();
-			//だいたい1秒ごとに処理を行う
-			timeleft -= Time.deltaTime;
-			if (timeleft <= 0.0) {
-				timeleft = 1.0f;
-				time -= 1;
-				vrmode.text = time.ToString();
-				if (time == 0) {
-					if (GameSetting.vr_mode_flag) {
-						vrmode.text = "VR Mode Off";
-						m_gvr_viewer.VRModeEnabled = false;
-						GameSetting.vr_mode_flag = false;
-						time = 6;
-					} else {
-						vrmode.text = "VR Mode On";
-						m_gvr_viewer.VRModeEnabled = true;
-						GameSetting.vr_mode_flag = true;
-						time = 6;
-					}
 				}
 			}
 		}
